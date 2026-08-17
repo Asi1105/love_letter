@@ -393,13 +393,13 @@
             <div class="heart-seal">💌</div>
             <div class="label">❤️ 一封写给你的信</div>
         </div>
-        <p class="envelope-tip">👆 轻触信封拆开</p>
+        <p class="envelope-tip">👆 拆开信封</p>
     </div>
 
     <!-- 页面2：乱屏情话 -->
     <div id="chaos" class="page">
         <div id="chaosContainer"></div>
-        <div class="hint" id="chaosHint">✨ 点击继续，翻看我们的回忆 →</div>
+        <div class="hint" id="chaosHint">✨ 翻看我们的回忆 →</div>
     </div>
 
     <!-- 页面3：故事线 -->
@@ -409,7 +409,7 @@
             <p class="sub">每一个瞬间，都值得被温柔记录</p>
         </div>
         <div class="story-timeline" id="timeline"></div>
-        <button class="story-next-btn" id="storyNextBtn">💌 读一读我想对你说的话 →</button>
+        <button class="story-next-btn" id="storyNextBtn">💌 我想对你说的话 →</button>
     </div>
 
     <!-- 页面4：手写信 -->
@@ -440,8 +440,8 @@
         // ==========================================
         // 1. 配置数据（在此填入真实信息与照片）
         // ==========================================
-        const HER_NAME = '小可爱';
-        const MY_NAME = '你的名字';
+        const HER_NAME = '屁屁';
+        const MY_NAME = '旭';
 
         const sparkLines = [
             "“到家了记得跟我说一声” 🌙",
@@ -460,24 +460,64 @@
 
         const storyData = [
             {
-                date: "2024.09.01",
-                desc: "开学初见的那一天，后排的视线刚好落在了你身上。",
+                date: "2023.12",
+                desc: "和你的缘分开始于语言班的时候，我记得和你第一次做同桌，你的紫色棋盘格书包，还有你明亮的眼眸",
                 img: "images/p1.jpg"
             },
             {
-                date: "2024.11.15",
-                desc: "第一次一起喝热奶茶，聊起各自喜欢的事物，时间过得飞快。",
+                date: "2025.09.02",
+                desc: "这一天是我们第一次单独出来，一起吃了好吃的日料，一起去了爵士乐bar，你问我今天开心吗，我的回答是特别开心",
                 img: "images/p2.jpg"
             },
+
             {
-                date: "2025.02.14",
-                desc: "寒风里的那一次散步，不知不觉就牵起了你的手。",
+                date: "2026.03.23",
+                desc: "一起去上语言班，一起去看博物馆，一起看电影，一起去弹钢琴...这天是你第一次过敏，你说我是你的过敏原。",
+                img: "images/p6.jpg"
+            },
+
+            {
+                date: "2026.03.30",
+                desc: "这天一起看了呼啸山庄，一起喝酒一起去了达令港散步，你说不要我管你让我先回家，但我怎么能放心呢",
+                img: "images/p7.jpg"
+            },
+
+            {
+                date: "2026.04.17",
+                desc: "吃了韩餐，你过敏了，地铁上你靠着我",
+                img: "images/p8.jpg"
+            },
+
+            {
+                date: "2026.04.27",
+                desc: "你穿了粉色的长裙，歌剧院粉色的晚霞很衬你",
+                img: "images/p5.jpg"
+            },
+
+            {
+                date: "2026.07.24",
+                desc: "我告诉你我要离开悉尼了，你说你舍不得我走，这次我接收到了，我同样舍不得你。在歌剧院看剧时想牵你却又不敢牵你，或许像你说的我真的太迟钝了吧。",
                 img: "images/p3.jpg"
             },
             {
-                date: "2026.08.19",
-                desc: "又是一年七夕。遇见你，是生活里最美好也最确定的事。",
+                date: "2026.07.25",
+                desc: "凌晨去的酒吧，漂亮的火焰表演，也是在这天的达令港第一次亲了你，旋转的秋千，像是做梦一样..。",
                 img: "images/p4.jpg"
+            },
+            {
+                date: "2026.12.25",
+                desc: "圣诞节的夜晚，我们一起看了灯展，走在满是彩灯的街道上，心里暖暖的。",
+                img: "images/p.jpg"
+            },
+            {
+                date: "2027.02.14",
+                desc: "又一个情人节，我们一起做了手工巧克力，虽然有点笨拙，但很开心。",
+                img: "images/p.jpg"
+            },
+            {
+                date: "2027.08.19",
+                desc: "七夕的夜晚，我们一起在海边看星星，听海浪拍打的声音，心里充满了宁静和幸福。",
+                img: "images/p.jpg"
             }
         ];
 
