@@ -167,7 +167,7 @@
             position: fixed;
             border: 1px solid rgba(255, 130, 180, 0.3);
             border-radius: 12px;
-            background: rgba(25, 10, 28, 0.92);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(8px);
             padding: 12px 16px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
@@ -218,7 +218,7 @@
             letter-spacing: 1px;
         }
         .story-timeline {
-            max-width: 450px;
+            max-width: 520px;
             width: 100%;
             position: relative;
             padding: 10px 0;
@@ -244,8 +244,8 @@
             transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             opacity: 0;
             transform: translateY(40px) scale(0.95);
-            width: 92%;
-            margin-left: 4%;
+            width: 96%;
+            margin-left: 2%;
         }
         .story-item.show {
             opacity: 1;
@@ -255,14 +255,19 @@
             width: 100%;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 8px;
-            aspect-ratio: 16/10;
+            margin-bottom: 10px;
             background: #231228;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 520px;
         }
         .story-item .img-wrapper img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 520px;
+            object-fit: contain;
+            display: block;
         }
         .story-item .date {
             font-size: 12px;
@@ -460,7 +465,7 @@
 
         const storyData = [
             {
-                date: "2023.12",
+                date: "2023.11",
                 desc: "和你的缘分开始于语言班的时候，我记得和你第一次做同桌，你的紫色棋盘格书包，还有你明亮的眼眸",
                 img: "images/p1.jpg"
             },
@@ -469,31 +474,36 @@
                 desc: "这一天是我们第一次单独出来，一起吃了好吃的日料，一起去了爵士乐bar，你问我今天开心吗，我的回答是特别开心",
                 img: "images/p2.jpg"
             },
-
             {
                 date: "2026.03.23",
                 desc: "一起去上语言班，一起去看博物馆，一起看电影，一起去弹钢琴...这天是你第一次过敏，你说我是你的过敏原。",
                 img: "images/p6.jpg"
             },
-
             {
                 date: "2026.03.30",
                 desc: "这天一起看了呼啸山庄，一起喝酒一起去了达令港散步，你说不要我管你让我先回家，但我怎么能放心呢",
                 img: "images/p7.jpg"
             },
-
+            {
+                date: "2026.04.16",
+                desc: "这两天一起看了歌剧魅影和乱世佳人，一起观赏不一样的爱情故事，或许这世界上真的存在音乐天使吧",
+                img: "images/p10.jpg"
+            },
             {
                 date: "2026.04.17",
-                desc: "吃了韩餐，你过敏了，地铁上你靠着我",
+                desc: "去Lidcombe 吃了韩餐忘记带药，你过敏很严重，我抓着你的手往city飞奔，地铁上你靠在我的肩膀，你说:“以后出来你帮我带过敏药好不好”，真希望时间能在这一刻定格。",
                 img: "images/p8.jpg"
             },
-
             {
                 date: "2026.04.27",
-                desc: "你穿了粉色的长裙，歌剧院粉色的晚霞很衬你",
+                desc: "你穿了白色的长裙，歌剧院粉色的晚霞和你很搭，和你在一起总是特别顺利，总能遇到美丽的景色",
                 img: "images/p5.jpg"
             },
-
+            {
+                date: "2026.05.4",
+                desc: "这天你生日啦，这天我们一起吃了广式早茶，给你卡点生日祝福，我是第一名嘿嘿嘿",
+                img: "images/p9.jpg"
+            },
             {
                 date: "2026.07.24",
                 desc: "我告诉你我要离开悉尼了，你说你舍不得我走，这次我接收到了，我同样舍不得你。在歌剧院看剧时想牵你却又不敢牵你，或许像你说的我真的太迟钝了吧。",
@@ -501,23 +511,58 @@
             },
             {
                 date: "2026.07.25",
-                desc: "凌晨去的酒吧，漂亮的火焰表演，也是在这天的达令港第一次亲了你，旋转的秋千，像是做梦一样..。",
+                desc: "凌晨去的酒吧，漂亮的火焰表演，也是在这天的达令港第一次亲吻，旋转的秋千，好像是做梦一样...",
                 img: "images/p4.jpg"
             },
             {
-                date: "2026.12.25",
-                desc: "圣诞节的夜晚，我们一起看了灯展，走在满是彩灯的街道上，心里暖暖的。",
-                img: "images/p.jpg"
+                date: "2026.7.26",
+                desc: "这是在一起后第一次出来玩，一起打卡了总督府，这下可以光明正大牵你的手，但讲真的这时候真的感觉像做梦一样，感觉好不真实",
+                img: "images/p11.jpg"
             },
             {
-                date: "2027.02.14",
-                desc: "又一个情人节，我们一起做了手工巧克力，虽然有点笨拙，但很开心。",
-                img: "images/p.jpg"
+                date: "2026.7.26",
+                desc: "一起在Crown的酒吧看日落，在Circular Quay比出了最完美的爱心💗",
+                img: "images/p12.jpg"
             },
             {
-                date: "2027.08.19",
-                desc: "七夕的夜晚，我们一起在海边看星星，听海浪拍打的声音，心里充满了宁静和幸福。",
-                img: "images/p.jpg"
+                date: "2026.07.31",
+                desc: "真的很喜欢你穿白色，很神圣清纯小白花的感觉。这天我抱着“守护甜心”在Newtown等你~期待你的到来",
+                img: "images/p13.jpg"
+            },
+            {
+                date: "2026.08.1",
+                desc: "这天我们在家里调酒，看电影，打植物大战僵尸，一直聊天到第二天清晨...不想你走，想一直和你在一起",
+                img: "images/p14.jpg"
+            },
+            {
+                date: "2026.08.4",
+                desc: "我们打卡了Pyrmont的一家日料，担心你找不到路，我去接你嘿嘿",
+                img: "images/p15.jpg"
+            },
+            {
+                date: "2026.08.5",
+                desc: "一起逛了海鲜市场，一起夜游新南美术馆，真是一次特别的体验。顺道展示了两位灵魂画手的画技，井底之蛙~ gua~",
+                img: "images/p16.jpg"
+            },
+            {
+                date: "2026.08.8",
+                desc: "第一次一起看海，黄昏夕阳落日，拍了好多好多的照片，在Cronulla，只有我们两个“外地人”...",
+                img: "images/p17.jpg"
+            },
+            {
+                date: "2026.08.8",
+                desc: "最后一次逛校园，回味学生生涯的时光，然后发生了一些奇奇怪怪的事情",
+                img: "images/p18.jpg"
+            },
+            {
+                date: "2026.08.9",
+                desc: "在bar 82喝酒，俯瞰悉尼夜景，美不胜收。其实我并不喜欢去酒吧，重要的是和你一起...",
+                img: "images/p19.jpg"
+            },
+            {
+                date: "2026.08.10",
+                desc: "没想到最后的一天还能见上一面，收到了你花费很久写的情书，嘿嘿，辛苦了宝宝，相信我们一定还会再见",
+                img: "images/p20.jpg"
             }
         ];
 
@@ -624,7 +669,7 @@
             }, 600);
         });
 
-        // 页面2：弹窗（调整为每 1 秒弹出一个）
+        // 页面2：弹窗（每 1 秒弹出一个）
         function runChaosEffect() {
             const container = document.getElementById('chaosContainer');
             const hint = document.getElementById('chaosHint');
@@ -632,7 +677,6 @@
             hint.style.display = 'none';
             let count = 0;
 
-            // 先立即生成第一个气泡，避免进入页面后空白等待 1 秒
             generateOneChaos(container);
             count++;
 
@@ -644,7 +688,7 @@
                 }
                 generateOneChaos(container);
                 count++;
-            }, 1000); // 间隔调整为 1000 毫秒（1秒）
+            }, 1000);
         }
 
         function generateOneChaos(container) {
