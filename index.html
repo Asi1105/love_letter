@@ -476,19 +476,16 @@
                 desc: "这一天是我们第一次单独出来，一起吃了好吃的日料，一起去了爵士乐bar，你问我今天开心吗，我的回答是特别开心",
                 img: "images/p2.jpg"
             },
-
             {
                 date: "2026.03.6",
                 desc: "一起在city喝下午茶，逛了书店，你说你喜欢在黑暗的环境学习，而我喜欢你安静认真的样子",
                 img: "images/p22.jpg"
             },
-
             {
                 date: "2026.03.15",
                 desc: "一起吃了泰餐，来到我的地盘了，一起去唱k，唱青春修炼手册和宠爱，唱到嗓子都哑了，你说我很适合唱张远的歌，感觉和你特别合得来",
                 img: "images/p21.jpg"
             },
-
             {
                 date: "2026.03.23",
                 desc: "一起去上语言班，一起去看博物馆，一起看电影，一起去弹钢琴...这天是你第一次过敏，你说我是你的过敏原。",
@@ -685,29 +682,36 @@
             }, 600);
         });
 
-        // 页面2：弹窗（每 1 秒弹出一个）
+        // 页面2：弹窗（100% 不重复，按顺序弹完配置的全部碎碎念）
         function runChaosEffect() {
             const container = document.getElementById('chaosContainer');
             const hint = document.getElementById('chaosHint');
             container.innerHTML = '';
             hint.style.display = 'none';
-            let count = 0;
 
-            generateOneChaos(container);
-            count++;
+            // 1. 洗牌打乱数组
+            const shuffledLines = [...sparkLines].sort(() => Math.random() - 0.5);
+            let currentIndex = 0;
 
+            // 2. 立即展示第 1 个气泡
+            if (shuffledLines.length > 0) {
+                generateOneChaos(container, shuffledLines[currentIndex]);
+                currentIndex++;
+            }
+
+            // 3. 每隔 1 秒依次弹出一个，弹完所有后亮起按钮
             chaosTimer = setInterval(() => {
-                if (count >= 16) {
+                if (currentIndex >= shuffledLines.length) {
                     clearInterval(chaosTimer);
                     hint.style.display = 'block';
                     return;
                 }
-                generateOneChaos(container);
-                count++;
+                generateOneChaos(container, shuffledLines[currentIndex]);
+                currentIndex++;
             }, 1000);
         }
 
-        function generateOneChaos(container) {
+        function generateOneChaos(container, lineText) {
             const w = window.innerWidth;
             const h = window.innerHeight;
             const win = document.createElement('div');
@@ -716,10 +720,9 @@
             win.style.top = (Math.random() * (h - 120)) + 'px';
             win.style.animationDelay = (Math.random() * 2) + 's';
             
-            const line = sparkLines[Math.floor(Math.random() * sparkLines.length)];
             win.innerHTML = `
                 <div class="title-bar"><span>💬 我们的碎碎念</span><span>Just now</span></div>
-                <div class="content">${line}</div>
+                <div class="content">${lineText}</div>
             `;
             container.appendChild(win);
         }
