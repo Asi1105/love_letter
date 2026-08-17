@@ -584,7 +584,7 @@
             }, 600);
         });
 
-        // 页面2：弹窗
+        // 页面2：弹窗（调整为每 1 秒弹出一个）
         function runChaosEffect() {
             const container = document.getElementById('chaosContainer');
             const hint = document.getElementById('chaosHint');
@@ -592,28 +592,36 @@
             hint.style.display = 'none';
             let count = 0;
 
+            // 先立即生成第一个气泡，避免进入页面后空白等待 1 秒
+            generateOneChaos(container);
+            count++;
+
             chaosTimer = setInterval(() => {
                 if (count >= 16) {
                     clearInterval(chaosTimer);
                     hint.style.display = 'block';
                     return;
                 }
-                const w = window.innerWidth;
-                const h = window.innerHeight;
-                const win = document.createElement('div');
-                win.className = 'chaos-window';
-                win.style.left = (Math.random() * (w - 240)) + 'px';
-                win.style.top = (Math.random() * (h - 120)) + 'px';
-                win.style.animationDelay = (Math.random() * 2) + 's';
-                
-                const line = sparkLines[Math.floor(Math.random() * sparkLines.length)];
-                win.innerHTML = `
-                    <div class="title-bar"><span>💬 我们的碎碎念</span><span>Just now</span></div>
-                    <div class="content">${line}</div>
-                `;
-                container.appendChild(win);
+                generateOneChaos(container);
                 count++;
-            }, 180);
+            }, 1000); // 间隔调整为 1000 毫秒（1秒）
+        }
+
+        function generateOneChaos(container) {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const win = document.createElement('div');
+            win.className = 'chaos-window';
+            win.style.left = (Math.random() * (w - 240)) + 'px';
+            win.style.top = (Math.random() * (h - 120)) + 'px';
+            win.style.animationDelay = (Math.random() * 2) + 's';
+            
+            const line = sparkLines[Math.floor(Math.random() * sparkLines.length)];
+            win.innerHTML = `
+                <div class="title-bar"><span>💬 我们的碎碎念</span><span>Just now</span></div>
+                <div class="content">${line}</div>
+            `;
+            container.appendChild(win);
         }
 
         document.getElementById('chaosHint').addEventListener('click', () => {
