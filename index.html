@@ -456,11 +456,12 @@
             "“放心吧，有我在呢” 🤍",
             "哪怕只是并排坐着发呆，也觉得很舒服",
             "你的每一条语音，我其实都会听好几遍",
-            "“想吃什么？下班顺路带给你” 🍰",
+            "“想吃什么？我带你去” 🍰",
             "遇见你之后，未来的计划都有了画面 ✨",
             "“晚安，明天见啦” 💤",
-            "其实每次见你之前，我都偷偷整理了好几次衣服",
-            "世界很大，但只想把时间都留给你"
+            "其实每次见你之前，我都会非常期待",
+            "世界很大，但只想把时间都留给你",
+            "想和你一起呆着，就算什么都不做"
         ];
 
         const storyData = [
@@ -486,7 +487,7 @@
             },
             {
                 date: "2026.04.16",
-                desc: "这两天一起看了歌剧魅影和乱世佳人，一起观赏不一样的爱情故事，或许这世界上真的存在音乐天使吧",
+                desc: "一起看了歌剧魅影和乱世佳人，一起观赏不一样的爱情故事，或许这世界上真的存在音乐天使吧",
                 img: "images/p10.jpg"
             },
             {
@@ -501,7 +502,7 @@
             },
             {
                 date: "2026.05.4",
-                desc: "这天你生日啦，这天我们一起吃了广式早茶，给你卡点生日祝福，我是第一名嘿嘿嘿",
+                desc: "这天你生日啦，我们一起吃了广式早茶，给你卡点生日祝福，我是第一名嘿嘿嘿",
                 img: "images/p9.jpg"
             },
             {
@@ -712,7 +713,7 @@
             switchPage('story');
         });
 
-        // 页面3：故事每隔 3 秒出现
+        // 页面3：故事每隔 5 秒出现
         function runStoryTimeline() {
             const timeline = document.getElementById('timeline');
             const nextBtn = document.getElementById('storyNextBtn');
@@ -736,14 +737,14 @@
                 const t = setTimeout(() => {
                     elem.classList.add('show');
                     elem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, index * 3000 + 400);
+                }, index * 5000 + 400);
                 storyTimers.push(t);
             });
 
             const btnTimer = setTimeout(() => {
                 nextBtn.style.display = 'block';
                 nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, items.length * 3000 + 600);
+            }, items.length * 5000 + 600);
             storyTimers.push(btnTimer);
         }
 
