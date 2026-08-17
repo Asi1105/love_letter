@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>💌 给你的七夕情书</title>
+    <style>
+        /* ========== 全局重置 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Georgia', serif;
+            background: #120716;
+            color: #fff;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+        }
+
+        /* ========== 页面容器 ========== */
+        .page {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .page.active {
+            display: flex;
+        }
+
+        /* ========== 通用返回按钮 ========== */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-btn.show {
+            display: flex;
+        }
+
+        /* ========== 页面1：信封 ========== */
+        #envelope {
+            background: radial-gradient(circle at center, #2e1233 0%, #120716 100%);
+        }
+        .envelope-box {
+            width: 300px;
+            height: 190px;
+            background: #f0d7b7;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(230, 100, 150, 0.25);
+            cursor: pointer;
+            transition: transform 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .envelope-box:active {
+            transform: scale(0.98);
+        }
+        .envelope-box .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #e5caa9;
+            clip-path: polygon(0 0, 50% 55%, 100% 0);
+            border-radius: 12px 12px 0 0;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+            z-index: 1;
+        }
+        .envelope-box.opened .flap {
+            transform: rotateX(180deg);
+        }
+        .envelope-box .heart-seal {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 42px;
+            z-index: 2;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+        }
+        .envelope-box .label {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #5c3c28;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 4px 16px;
+            border-radius: 20px;
+            z-index: 2;
+            white-space: nowrap;
+        }
+        .envelope-tip {
+            margin-top: 28px;
+            color: #d1a8b8;
+            font-size: 14px;
+            letter-spacing: 1px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.98); }
+        }
+
+        /* ========== 页面2：乱屏情话弹窗 ========== */
+        #chaos {
+            background: #0d0611;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            padding: 0;
+        }
+        #chaos .hint {
+            position: fixed;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            background: rgba(255, 107, 157, 0.2);
+            backdrop-filter: blur(12px);
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #ff9bbb;
+            border: 1px solid rgba(255, 107, 157, 0.4);
+            cursor: pointer;
+            display: none;
+            white-space: nowrap;
+            box-shadow: 0 4px 20px rgba(255, 107, 157, 0.3);
+        }
+        .chaos-window {
+            position: fixed;
+            border: 1px solid rgba(255, 130, 180, 0.3);
+            border-radius: 12px;
+            background: rgba(25, 10, 28, 0.92);
+            backdrop-filter: blur(8px);
+            padding: 12px 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            color: #ffd1e3;
+            animation: chaosFloat 3s ease-in-out infinite;
+            max-width: 250px;
+            word-break: break-word;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .chaos-window .title-bar {
+            display: flex;
+            justify-content: space-between;
+            color: #ff7aa8;
+            font-size: 11px;
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+        .chaos-window .content {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #f7e6ec;
+        }
+        @keyframes chaosFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* ========== 页面3：故事时间线 ========== */
+        #story {
+            background: linear-gradient(180deg, #0f0714 0%, #1d0a26 100%);
+            padding: 30px 16px 50px;
+            justify-content: flex-start;
+        }
+        #story .story-header {
+            text-align: center;
+            padding: 30px 0 20px;
+        }
+        #story .story-header h2 {
+            font-size: 24px;
+            color: #ffc4d6;
+            letter-spacing: 1px;
+        }
+        #story .story-header .sub {
+            color: #9d8b9e;
+            font-size: 13px;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+        .story-timeline {
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            padding: 10px 0;
+        }
+        .story-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #ff7aa8, #d4a5ff, #ff7aa8);
+            opacity: 0.4;
+        }
+        .story-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            width: 92%;
+            margin-left: 4%;
+        }
+        .story-item.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .story-item .img-wrapper {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            aspect-ratio: 16/10;
+            background: #231228;
+        }
+        .story-item .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .story-item .date {
+            font-size: 12px;
+            color: #ff8cb3;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .story-item .desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e8dbe4;
+            margin-top: 4px;
+        }
+        .story-next-btn {
+            margin: 20px auto 30px;
+            padding: 12px 32px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 120, 160, 0.4);
+            background: rgba(255, 120, 160, 0.15);
+            color: #ffb8d1;
+            font-size: 15px;
+            cursor: pointer;
+            display: none;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* ========== 页面4：手写信 ========== */
+        #letter {
+            background: #180c1b;
+            padding: 60px 16px 40px;
+            justify-content: flex-start;
+        }
+        .letter-paper {
+            width: 100%;
+            max-width: 440px;
+            background: #fbf5eb;
+            background-image: linear-gradient(rgba(180, 150, 120, 0.12) 1px, transparent 1px);
+            background-size: 100% 28px;
+            border-radius: 14px;
+            padding: 36px 24px 28px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: all 0.8s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .letter-paper.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .letter-paper .greeting {
+            font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+            font-size: 20px;
+            color: #4a2f1b;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        .letter-paper .letter-body {
+            font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+            font-size: 16px;
+            line-height: 28px;
+            color: #382415;
+        }
+        .letter-paper .letter-body p {
+            text-indent: 2em;
+            margin-bottom: 12px;
+        }
+        .letter-paper .letter-footer {
+            margin-top: 24px;
+            text-align: right;
+            font-family: 'KaiTi', '楷体', serif;
+            font-size: 15px;
+            color: #4a2f1b;
+        }
+        .letter-paper .letter-footer .date-line {
+            font-size: 12px;
+            color: #8c7260;
+            margin-top: 4px;
+        }
+        .to-be-continued {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 15px;
+            color: #e5bad0;
+            letter-spacing: 4px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .to-be-continued.show {
+            opacity: 1;
+        }
+
+        /* ========== 音乐悬浮按钮 ========== */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .music-btn.playing {
+            animation: spin 5s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="back-btn" id="backBtn">‹ 返回</button>
+
+    <!-- 页面1：信封 -->
+    <div id="envelope" class="page active">
+        <div class="envelope-box" id="envelopeBox">
+            <div class="flap"></div>
+            <div class="heart-seal">💌</div>
+            <div class="label">❤️ 一封写给你的信</div>
+        </div>
+        <p class="envelope-tip">👆 轻触信封拆开</p>
+    </div>
+
+    <!-- 页面2：乱屏情话 -->
+    <div id="chaos" class="page">
+        <div id="chaosContainer"></div>
+        <div class="hint" id="chaosHint">✨ 点击继续，翻看我们的回忆 →</div>
+    </div>
+
+    <!-- 页面3：故事线 -->
+    <div id="story" class="page">
+        <div class="story-header">
+            <h2>📖 我们的足迹</h2>
+            <p class="sub">每一个瞬间，都值得被温柔记录</p>
+        </div>
+        <div class="story-timeline" id="timeline"></div>
+        <button class="story-next-btn" id="storyNextBtn">💌 读一读我想对你说的话 →</button>
+    </div>
+
+    <!-- 页面4：手写信 -->
+    <div id="letter" class="page">
+        <div class="letter-paper" id="letterPaper">
+            <div class="greeting">亲爱的 <span id="herName"></span>：</div>
+            <div class="letter-body" id="letterBody"></div>
+            <div class="letter-footer">
+                <div>爱你的</div>
+                <div id="myName" style="font-weight: bold; margin-top: 2px;"></div>
+                <div class="date-line" id="letterDate"></div>
+            </div>
+        </div>
+        <div class="to-be-continued" id="toBeContinued">
+            ❤️ 我们的故事，未完待续 ❤️
+        </div>
+    </div>
+
+    <!-- 音乐控制 -->
+    <button class="music-btn" id="musicBtn" title="播放/暂停">🔇</button>
+
+    <!-- 背景音乐：指向 music 文件夹下的本地音频 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music/bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ==========================================
+        // 1. 配置数据（在此填入真实信息与照片）
+        // ==========================================
+        const HER_NAME = '小可爱';
+        const MY_NAME = '你的名字';
+
+        const sparkLines = [
+            "“到家了记得跟我说一声” 🌙",
+            "跟你聊天的时候，总是忍不住傻笑",
+            "“你看，今天的夕阳特别好看” 🌇",
+            "有你在身边的时候，心里总是很踏实",
+            "“放心吧，有我在呢” 🤍",
+            "哪怕只是并排坐着发呆，也觉得很舒服",
+            "你的每一条语音，我其实都会听好几遍",
+            "“想吃什么？下班顺路带给你” 🍰",
+            "遇见你之后，未来的计划都有了画面 ✨",
+            "“晚安，明天见啦” 💤",
+            "其实每次见你之前，我都偷偷整理了好几次衣服",
+            "世界很大，但只想把时间都留给你"
+        ];
+
+        const storyData = [
+            {
+                date: "2024.09.01",
+                desc: "开学初见的那一天，后排的视线刚好落在了你身上。",
+                img: "images/p1.jpg"
+            },
+            {
+                date: "2024.11.15",
+                desc: "第一次一起喝热奶茶，聊起各自喜欢的事物，时间过得飞快。",
+                img: "images/p2.jpg"
+            },
+            {
+                date: "2025.02.14",
+                desc: "寒风里的那一次散步，不知不觉就牵起了你的手。",
+                img: "images/p3.jpg"
+            },
+            {
+                date: "2026.08.19",
+                desc: "又是一年七夕。遇见你，是生活里最美好也最确定的事。",
+                img: "images/p4.jpg"
+            }
+        ];
+
+        const LETTER_CONTENT = `
+            <p>写下这些字的时候，耳边放着这首安静的钢琴曲，脑海里全是我们相处的细节。</p>
+            <p>从最初小心的试探，到后来习惯了彼此的陪伴。每次和你在一起，平淡无奇的日子好像都有了特别的意义。</p>
+            <p>谢谢你给我的所有理解、包容与偏爱。未来的路还很长，我想慢慢陪你走下去。</p>
+            <p>七夕快乐，愿我们岁岁常相伴。</p>
+        `;
+
+        // ==========================================
+        // 2. 音频控制逻辑
+        // ==========================================
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
+
+        function startMusic() {
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.classList.add('playing');
+                    musicBtn.textContent = '🎵';
+                }).catch(err => {
+                    console.log("音频播放待手势触发:", err);
+                });
+            }
+        }
+
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.textContent = '🔇';
+                isMusicPlaying = false;
+            } else {
+                startMusic();
+            }
+        });
+
+        document.addEventListener('click', () => {
+            if (!isMusicPlaying) startMusic();
+        }, { once: true });
+
+        // ==========================================
+        // 3. 页面路由与动画驱动
+        // ==========================================
+        let pageHistory = ['envelope'];
+        const backBtn = document.getElementById('backBtn');
+
+        let chaosTimer = null;
+        let storyTimers = [];
+
+        function clearAllTimers() {
+            if (chaosTimer) clearInterval(chaosTimer);
+            storyTimers.forEach(t => clearTimeout(t));
+            storyTimers = [];
+        }
+
+        function triggerPageAction(pageId) {
+            clearAllTimers();
+
+            if (pageId === 'envelope') {
+                const box = document.getElementById('envelopeBox');
+                box.classList.remove('opened');
+            } else if (pageId === 'chaos') {
+                runChaosEffect();
+            } else if (pageId === 'story') {
+                runStoryTimeline();
+            } else if (pageId === 'letter') {
+                runLetterEffect();
+            }
+        }
+
+        function switchPage(pageId, pushToHistory = true) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            if (pushToHistory && pageHistory[pageHistory.length - 1] !== pageId) {
+                pageHistory.push(pageId);
+            }
+            backBtn.classList.toggle('show', pageHistory.length > 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            triggerPageAction(pageId);
+        }
+
+        backBtn.addEventListener('click', () => {
+            if (pageHistory.length > 1) {
+                pageHistory.pop();
+                const prev = pageHistory[pageHistory.length - 1];
+                switchPage(prev, false);
+            }
+        });
+
+        // 页面1：信封
+        const envelopeBox = document.getElementById('envelopeBox');
+        envelopeBox.addEventListener('click', function() {
+            startMusic();
+            this.classList.add('opened');
+            setTimeout(() => {
+                switchPage('chaos');
+            }, 600);
+        });
+
+        // 页面2：弹窗
+        function runChaosEffect() {
+            const container = document.getElementById('chaosContainer');
+            const hint = document.getElementById('chaosHint');
+            container.innerHTML = '';
+            hint.style.display = 'none';
+            let count = 0;
+
+            chaosTimer = setInterval(() => {
+                if (count >= 16) {
+                    clearInterval(chaosTimer);
+                    hint.style.display = 'block';
+                    return;
+                }
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                const win = document.createElement('div');
+                win.className = 'chaos-window';
+                win.style.left = (Math.random() * (w - 240)) + 'px';
+                win.style.top = (Math.random() * (h - 120)) + 'px';
+                win.style.animationDelay = (Math.random() * 2) + 's';
+                
+                const line = sparkLines[Math.floor(Math.random() * sparkLines.length)];
+                win.innerHTML = `
+                    <div class="title-bar"><span>💬 我们的碎碎念</span><span>Just now</span></div>
+                    <div class="content">${line}</div>
+                `;
+                container.appendChild(win);
+                count++;
+            }, 180);
+        }
+
+        document.getElementById('chaosHint').addEventListener('click', () => {
+            switchPage('story');
+        });
+
+        // 页面3：故事每隔 3 秒出现
+        function runStoryTimeline() {
+            const timeline = document.getElementById('timeline');
+            const nextBtn = document.getElementById('storyNextBtn');
+            timeline.innerHTML = '';
+            nextBtn.style.display = 'none';
+
+            storyData.forEach((item) => {
+                const div = document.createElement('div');
+                div.className = 'story-item';
+                div.innerHTML = `
+                    <div class="img-wrapper"><img src="${item.img}" alt="回忆" onerror="this.src='https://picsum.photos/seed/love/600/400'"></div>
+                    <div class="date">${item.date}</div>
+                    <div class="desc">${item.desc}</div>
+                `;
+                timeline.appendChild(div);
+            });
+
+            const items = timeline.querySelectorAll('.story-item');
+            
+            items.forEach((elem, index) => {
+                const t = setTimeout(() => {
+                    elem.classList.add('show');
+                    elem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, index * 3000 + 400);
+                storyTimers.push(t);
+            });
+
+            const btnTimer = setTimeout(() => {
+                nextBtn.style.display = 'block';
+                nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, items.length * 3000 + 600);
+            storyTimers.push(btnTimer);
+        }
+
+        document.getElementById('storyNextBtn').addEventListener('click', () => {
+            switchPage('letter');
+        });
+
+        // 页面4：手写信
+        function runLetterEffect() {
+            document.getElementById('herName').textContent = HER_NAME;
+            document.getElementById('myName').textContent = MY_NAME;
+            document.getElementById('letterBody').innerHTML = LETTER_CONTENT;
+            
+            const d = new Date();
+            document.getElementById('letterDate').textContent = `${d.getFullYear()}年 七夕`;
+
+            const paper = document.getElementById('letterPaper');
+            const continued = document.getElementById('toBeContinued');
+            
+            paper.classList.remove('show');
+            continued.classList.remove('show');
+
+            setTimeout(() => paper.classList.add('show'), 200);
+            setTimeout(() => continued.classList.add('show'), 1200);
+        }
+    </script>
+</body>
+</html>
